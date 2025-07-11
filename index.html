@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BWGA Nexus AI</title>
+    <meta name="theme-color" content="#0a192f">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tinos:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'nexus-bg': '#0a192f',
+              'nexus-surface': '#172a45',
+              'nexus-accent': '#f59e0b',
+              'nexus-secondary': '#22d3ee',
+              'nexus-success': '#10b981',
+              'nexus-error': '#ef4444',
+              'nexus-text-primary': '#ccd6f6',
+              'nexus-text-secondary': '#8892b0',
+              'nexus-text-muted': '#64748b',
+              'nexus-border': 'rgba(34, 211, 238, 0.2)',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Tinos', 'serif'],
+            },
+          }
+        },
+        plugins: [],
+      }
+    </script>
+    <style>
+      /* Custom App Loader Styles */
+      #app-loader {
+        position: fixed;
+        inset: 0;
+        background-color: #0a192f; /* nexus-bg */
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 500ms ease-in-out;
+        opacity: 1;
+      }
+
+      .loader-logo {
+        font-family: 'Inter', sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #ccd6f6; /* nexus-text-primary */
+        letter-spacing: 0.05em;
+        margin-bottom: 1.5rem;
+      }
+
+      .loader-spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid rgba(245, 158, 11, 0.3); /* nexus-accent with opacity */
+        border-top-color: #f59e0b; /* nexus-accent */
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .prose {
+        color: #8892b0; /* nexus-text-secondary */
+      }
+      .prose h1, .prose h2, .prose h3, .prose h4, .prose strong {
+        color: #ccd6f6; /* nexus-text-primary */
+      }
+      .prose blockquote {
+        color: #a3b0d8;
+        border-left-color: #f59e0b; /* nexus-accent */
+      }
+      .prose a {
+        color: #22d3ee; /* nexus-secondary */
+      }
+      .prose p {
+          margin-top: 0;
+          margin-bottom: 0;
+      }
+
+      /* Professional Report Styles */
+      .report-document {
+        background-color: #f9fafb; /* gray-50 */
+        color: #1f2937; /* gray-800 */
+        font-family: 'Tinos', serif;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        border: 1px solid #e5e7eb; /* gray-200 */
+      }
+      .report-page-header {
+        border-bottom: 1px solid #d1d5db; /* gray-300 */
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+      }
+      .report-section-title {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        color: #111827; /* gray-900 */
+        border-bottom: 2px solid #e5e7eb; /* gray-200 */
+        padding-bottom: 0.5rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .score-box {
+        background-color: #f3f4f6; /* gray-100 */
+        border: 1px solid #e5e7eb; /* gray-200 */
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+      }
+      .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .report-table th {
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        text-align: left;
+        padding: 0.75rem 1rem;
+        color: white;
+        border-bottom: 2px solid #4b5563; /* gray-600 */
+      }
+      /* Specific header colors */
+      .report-table .header-teal { background-color: #115e59; /* teal-800 */ }
+      .report-table .header-sky { background-color: #075985; /* sky-800 */ }
+      .report-table .header-rose { background-color: #9f1239; /* rose-800 */ }
+
+      .report-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #e5e7eb; /* gray-200 */
+        vertical-align: top;
+      }
+      .report-table tr:last-child td {
+        border-bottom: none;
+      }
+      .report-table tr:nth-child(even) {
+        background-color: #f9fafb; /* gray-50 */
+      }
+      .report-table tr:nth-child(odd) {
+        background-color: #ffffff; /* white */
+      }
+
+      /* New Interleaved Annotation Block Styles */
+      .annotation-block-interleaved {
+        margin: 2rem 0;
+        padding: 1.25rem;
+        background-color: #f0f4ff; /* Lighter blue, less intrusive */
+        border-left: 5px solid #22d3ee; /* nexus-secondary */
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+      .annotation-block-interleaved h4 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        color: #075985; /* Darker blue */
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+      }
+      .annotation-block-interleaved p {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #374151; /* gray-700 */
+      }
+      .annotation-block-interleaved p strong {
+          color: #1e3a8a; /* Darker blue for emphasis */
+      }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@^18.2.0/client",
+    "@google/genai": "https://esm.sh/@google/genai@^0.8.0",
+    "recharts": "https://esm.sh/recharts@^2.12.7",
+    "jspdf": "https://esm.sh/jspdf@^2.5.1",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1",
+    "marked": "https://esm.sh/marked@^12.0.2",
+    "react-dom/": "https://esm.sh/react-dom@^18.2.0/",
+    "react/": "https://esm.sh/react@^18.2.0/",
+    "express": "https://esm.sh/express@^5.1.0",
+    "cors": "https://esm.sh/cors@^2.8.5",
+    "path": "https://esm.sh/path@^0.12.7",
+    "url": "https://esm.sh/url@^0.11.4"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-nexus-bg">
+    <div id="app-loader">
+      <div class="loader-logo">BWGA NEXUS AI</div>
+      <div class="loader-spinner"></div>
+      <p class="text-nexus-text-secondary mt-4">Initializing Intelligence Platform...</p>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+    <script>
+      if ('service-worker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.service-worker.register('/service-worker.js')
+            .then(registration => {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            })
+            .catch(error => {
+              console.log('ServiceWorker registration failed: ', error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
